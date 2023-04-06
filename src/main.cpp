@@ -18,6 +18,7 @@ double Kd = 0;
 double Setpoint = 50;
 
 unsigned long elapsedTime = millis();
+unsigned long lastExecutedMillis = 0;
 
 double Input, Output;
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
@@ -47,18 +48,20 @@ void loop() {
 
   double delayTime = 1 + (17 - 1) * (1 - ((-15) - 15) / (15 - (-15))); //equivalent of map function in for inverse relationship between input and output
 
-  
-  
-  // if (elapsedTime > delayTime) {
-
-  // }
-
   digitalWrite(motorPin, LOW);
-  delay(500);
-  digitalWrite(motorPin, HIGH);
-  delay(delayTime);
-  digitalWrite(motorPin, LOW);
-  delay(20 - (500 + delayTime));
+
+  if (elapsedTime >= 0.5) {
+    digitalWrite(motorPin, HIGH);
+    lastExecutedMillis = elapsedTime; 
+  }
+  if ((elapsedTime - lastExecutedMillis) >= delayTime) {
+    digitalWrite(motorPin, LOW);
+    lastExecutedMillis = elapsedTime;
+  }
+  if ((elapsedTime - lastExecutedMillis) >= (20 - (0.5 + delayTime))) {
+    Serial.println("Done");
+    lastExecutedMillis = elapsedTime;
+  }
 
   // // Adjust the setpoint and PID tuning parameters based on the frequency reading
   // if (Input > freqThreshold) {

@@ -53,10 +53,12 @@ void loop() {
 
   // }
 
+  digitalWrite(motorPin, LOW);
+  delay(500);
   digitalWrite(motorPin, HIGH);
   delay(delayTime);
   digitalWrite(motorPin, LOW);
-  delay(20 - delayTime);
+  delay(20 - (500 + delayTime));
 
   // // Adjust the setpoint and PID tuning parameters based on the frequency reading
   // if (Input > freqThreshold) {

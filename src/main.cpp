@@ -43,27 +43,36 @@ void loop() {
   myPID.Compute();
   
   // Set the motor speed based on the PID output
-  int delayTime = map(Output, -10, 10, 1, 17);
-  
-  
-  if (elapsedTime > delayTime) {
+  // int delayTime = map(Output, -10, 10, 1, 17);
 
-  }
-  // Adjust the setpoint and PID tuning parameters based on the frequency reading
-  if (Input > freqThreshold) {
-    Setpoint = Input * 0.9;  // Reduce the setpoint to slow down the motor
-    Kp = 2;  // Increase Kp to make the control more aggressive
-    Ki = 7;  // Increase Ki to reduce steady-state error
-    Kd = 0;  // Set Kd to 0 to avoid overshooting
-    myPID.SetTunings(Kp, Ki, Kd);
-  } else if (Input < freqThreshold - 1) {
-    Setpoint = Input * 1.1;  // Increase the setpoint to speed up the motor
-    Kp = 2;  // Set Kp back to the original value
-    Ki = 5;  // Set Ki back to the original value
-    Kd = 0;  // Set Kd to 0 to avoid overshooting
-    myPID.SetTunings(Kp, Ki, Kd);
-  }
+  double delayTime = 1 + (17 - 1) * (1 - ((-15) - 15) / (15 - (-15))); //equivalent of map function in for inverse relationship between input and output
+
   
-  // Wait for a short time before taking the next reading
-  delay(50);
+  
+  // if (elapsedTime > delayTime) {
+
+  // }
+
+  digitalWrite(motorPin, HIGH);
+  delay(delayTime);
+  digitalWrite(motorPin, LOW);
+  delay(20 - delayTime);
+
+  // // Adjust the setpoint and PID tuning parameters based on the frequency reading
+  // if (Input > freqThreshold) {
+  //   Setpoint = Input * 0.9;  // Reduce the setpoint to slow down the motor
+  //   Kp = 2;  // Increase Kp to make the control more aggressive
+  //   Ki = 7;  // Increase Ki to reduce steady-state error
+  //   Kd = 0;  // Set Kd to 0 to avoid overshooting
+  //   myPID.SetTunings(Kp, Ki, Kd);
+  // } else if (Input < freqThreshold - 1) {
+  //   Setpoint = Input * 1.1;  // Increase the setpoint to speed up the motor
+  //   Kp = 2;  // Set Kp back to the original value
+  //   Ki = 5;  // Set Ki back to the original value
+  //   Kd = 0;  // Set Kd to 0 to avoid overshooting
+  //   myPID.SetTunings(Kp, Ki, Kd);
+  // }
+  
+  // // Wait for a short time before taking the next reading
+  // delay(50);
 }
